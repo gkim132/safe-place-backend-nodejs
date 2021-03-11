@@ -5,6 +5,10 @@ const signin = require("./controllers/signin");
 
 const app = express();
 
+app.get("/", (req, res) => {
+  res.send("Postman test");
+});
+
 app.listen(6000, () => {
   console.log("app is runnign on port 6000");
 });
