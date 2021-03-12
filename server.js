@@ -34,14 +34,14 @@ app.get("/", (req, res) => {
 });
 
 app.post("/signin", (req, res) => {
-  if (
-    req.body.email === db.users[0].email &&
-    req.body.password === db.users[0].password
-  ) {
-    res.json(db.users[0]);
-  } else {
-    res.status(400).json("Error");
-  }
+  let found = false;
+  db.users.forEach((user) => {
+    if (req.body.email === user.email && req.body.password === user.password) {
+      found = true;
+      return res.json(user);
+    }
+  });
+  !found ? res.status(400).json("Sign-In Error") : null;
 });
 
 app.post("/register", (req, res) => {
@@ -59,17 +59,33 @@ app.post("/register", (req, res) => {
 
 app.post("/favorites", (req, res) => {
   const { placeId, coordinates, email } = req.body;
-  let targetUser;
+  let found = false;
+  const data = {
+    placeId: placeId,
+    coordinates: coordinates,
+  };
   db.users.forEach((user) => {
-    const data = {
-      placeId: placeId,
-      coordinates: coordinates,
-    };
     user.email === email
-      ? (user.favorites.push(data), (targetUser = user))
-      : console.log("Error Save");
+      ? (user.favorites.push(data), (found = true), res.json(user))
+      : null;
   });
-  res.json(targetUser);
+  !found ? res.status(400).json("Favorite Error") : null;
+});
+
+app.post("/delete", (req, res) => {
+  const { placeId, email } = req.body;
+  let targetUser;
+  let found = false;
+  db.users.forEach((user) => {
+    if (user.email === email) {
+      user.favorites.forEach((item, ind) => {
+        placeId === item.placeId
+          ? (user.favorites.splice(ind, 1), res.json(user), (found = true))
+          : null;
+      });
+    }
+  });
+  !found ? res.status(400).json("Delete Error") : null;
 });
 
 app.listen(3030, () => {
