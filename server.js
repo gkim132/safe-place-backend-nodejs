@@ -51,16 +51,7 @@ app.post("/register", (req, res) =>
   register.handleRegister(req, res, db, bcrypt)
 );
 
-app.post("/signin", (req, res) => {
-  let found = false;
-  database.users.forEach((user) => {
-    if (req.body.email === user.email && req.body.password === user.password) {
-      found = true;
-      return res.json(user);
-    }
-  });
-  !found ? res.status(400).json("Sign-In Error") : null;
-});
+app.post("/signin", (req, res) => signin.handleSignin(req, res, db, bcrypt));
 
 app.post("/favorites", (req, res) => {
   const { placeId, coordinates, email } = req.body;
