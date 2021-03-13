@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const knex = require("knex");
+const bcrypt = require("bcrypt-nodejs");
 
 const register = require("./controllers/register");
 const signin = require("./controllers/signin");
@@ -46,6 +47,10 @@ app.get("/", (req, res) => {
   res.send(database.users);
 });
 
+app.post("/register", (req, res) =>
+  register.handleRegister(req, res, db, bcrypt)
+);
+
 app.post("/signin", (req, res) => {
   let found = false;
   database.users.forEach((user) => {
@@ -55,30 +60,6 @@ app.post("/signin", (req, res) => {
     }
   });
   !found ? res.status(400).json("Sign-In Error") : null;
-});
-
-app.post("/register", (req, res) => {
-  const { email, name, password } = req.body;
-  // database.users.push({
-  //   id: "125",
-  //   name: name,
-  //   email: email,
-  //   password: password,
-  //   joined: new Date(),
-  //   favorites: [],
-  // });
-  db("users")
-    .returning("*")
-    .insert({
-      name: name,
-      email: email,
-      joined: new Date(),
-      password: password,
-    })
-    .then((user) => {
-      res.json(user[0]);
-    })
-    .catch((err) => res.status(400).json("unable to register"));
 });
 
 app.post("/favorites", (req, res) => {
