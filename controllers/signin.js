@@ -1,18 +1,8 @@
-const handleSignin = (req, res, db, database, bcrypt) => {
+const handleSignin = (req, res, db, bcrypt) => {
   const { email, password } = req.body;
   if (!email || !password) {
     return res.status(400).json("incorrect form submission");
   }
-
-  // let found = false;
-  // database.users.forEach((user) => {
-  //   if (req.body.email === user.email && req.body.password === user.password) {
-  //     found = true;
-  //     console.log(user);
-  //     return res.json(user);
-  //   }
-  // });
-  // !found ? res.status(400).json("Sign-In Error") : null;
 
   db.select("email", "hash")
     .from("login")
@@ -46,14 +36,6 @@ const handleSignin = (req, res, db, database, bcrypt) => {
               });
             }
           });
-        // db.select("*")
-        //   .from("users")
-        //   .where("email", "=", req.body.email)
-        //   .then((user) => {
-        //     console.log(user);
-        //     res.json(user[0]);
-        //   })
-        //   .catch((err) => res.status(400).json("Signning Error"));
       } else {
         res.status(400).json("Wrong Credentials");
       }
