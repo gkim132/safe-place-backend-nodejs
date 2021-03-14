@@ -10,15 +10,11 @@ const handleSignin = (req, res, db, bcrypt) => {
     .then((data) => {
       const isValid = bcrypt.compareSync(req.body.password, data[0].hash);
       if (isValid) {
-        console.log(req.body.email);
         db.select("*")
           .from("favorites")
           .where("email", "=", req.body.email)
           .then((user) => {
-            console.log(user);
-            console.log(!user.length);
             if (!user.length) {
-              console.log("adsf");
               res.json({
                 id: "",
                 name: "",

@@ -16,7 +16,6 @@ const handleFavorites = (req, res, db) => {
         .where("email", "=", req.body.email)
         .then((fav) => {
           res.json(fav);
-          console.log("fav: ", fav);
         });
     })
     .catch((e) => {
