@@ -32,6 +32,6 @@ app.post("/favorites", (req, res) => favorites.handleFavorites(req, res, db));
 
 app.post("/delete", (req, res) => favDelete.handleFavDelete(req, res, db));
 
-app.listen(3030, () => {
-  console.log("app is runnign on port 3030");
+app.listen(process.env.PORT || 3030, () => {
+  console.log(`app is runnign on port ${process.env.PORT}`);
 });
