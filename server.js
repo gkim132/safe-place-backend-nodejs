@@ -11,10 +11,10 @@ const favDelete = require("./controllers/favDelete");
 const db = knex({
   client: "pg",
   connection: {
-    host: "postgresql-amorphous-09956",
-    user: "postgres",
-    password: "1234",
-    database: "safeplace",
+    host: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   },
 });
 
