@@ -32,9 +32,9 @@ app.post("/register", (req, res) =>
 
 app.post("/signin", (req, res) => signin.handleSignin(req, res, db, bcrypt));
 
-app.post("/favorites", (req, res) => favorites.handleFavorites(req, res, db));
+app.put("/favorites", (req, res) => favorites.handleFavorites(req, res, db));
 
-app.post("/delete", (req, res) => favDelete.handleFavDelete(req, res, db));
+app.delete("/delete", (req, res) => favDelete.handleFavDelete(req, res, db));
 
 app.listen(process.env.PORT || 3030, () => {
   console.log(`app is runnign on port ${process.env.PORT}`);
